@@ -28,8 +28,11 @@ Si les identifiants sont corrects, vous serez redirigé vers l'interface princip
 L'interface principale est un client API complet :
 
 **Méthode** : Choisissez la méthode HTTP (GET, POST...) dans le menu déroulant.
-**Microservice** : Saisissez le nom du microservice cible (ex : `rs-storage`).
+
+**Microservice** : Saisissez le nom du microservice cible (ex : `rs-storage`).:
+
 **Endpoint** : Saisissez le chemin de l'endpoint (ex : `cache`).
+
 **Paramètres / Corps (JSON)** :
 
 - Pour les requêtes **GET**, saisissez les paramètres d'URL au format JSON (ex : `{ "page": 0, "size": 10 }`).
@@ -71,8 +74,8 @@ L'interface principale est un client API complet :
 #### 1. Cloner le dépôt
 
 ```bash
-git clone [URL_DE_TON_DEPOT]
-cd [NOM_DU_DOSSIER]
+git clone https://github.com/Margauxgrc/ihm-regards
+cd ihm-regards
 ```
 
 #### 2. Installer les dépendances
@@ -105,7 +108,7 @@ Vous pouvez y accéder à l'adresse [http://localhost:5173](http://localhost:517
 
 ---
 
-## ⚙️ Stack Technique
+## Stack Technique
 
 | Élément                | Outil / Librairie               |
 | ---------------------- | ------------------------------- |
@@ -121,13 +124,12 @@ Vous pouvez y accéder à l'adresse [http://localhost:5173](http://localhost:517
 
 ---
 
-## 📁 Structure du Projet
+## Structure du Projet
 
 ```
 src/
 ├── assets/         → Images et fichiers statiques
 ├── components/     → Composants de présentation (UI)
-├── constants/      → Constantes globales (URL API, méthodes...)
 ├── contexts/       → Providers React pour le contexte global
 ├── hooks/          → Hooks personnalisés pour la logique métier
 ├── pages/          → Pages principales de l’application
