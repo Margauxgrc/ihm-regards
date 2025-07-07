@@ -23,7 +23,6 @@ export async function generateToken(username: string, password: string, project:
       expires_in: response.data.expires_in,
     };
   } catch (error) {
-    console.error('Échec de la connexion :', error.response?.data || error.message);
     throw new Error('Échec de la connexion');
   }
 }
