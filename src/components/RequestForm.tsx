@@ -1,4 +1,3 @@
-import React from 'react';
 import CustomTextField from './CustomTextField';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { HTTP_METHODS } from '../constants';

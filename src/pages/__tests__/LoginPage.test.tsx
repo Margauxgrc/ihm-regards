@@ -7,7 +7,6 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import LoginPage from '../LoginPage';
 import RequestPage from '../RequestPage';
 import { generateToken } from '../../services/AuthService';
-import React from 'react';
 
 vi.mock('../../services/AuthService');
 

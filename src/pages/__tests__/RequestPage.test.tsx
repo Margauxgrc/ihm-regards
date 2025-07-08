@@ -7,7 +7,6 @@ import { RespProvider } from '../../contexts/RespProvider';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import DisplayResponsePage from '../RespPage';
 import { callApi } from '../../services/RequestService';
-import React from 'react';
 vi.mock('../../services/RequestService');
 
 vi.mock('../../hooks/useAuth', () => ({

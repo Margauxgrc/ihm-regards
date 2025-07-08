@@ -1,6 +1,6 @@
 # Interface de Communication avec REGARDS
 
-Une application web front-end construite avec **React** et **Material-UI** pour envoyer des requêtes dynamiques à l'API **REGARDS**, visualiser les réponses et conserver un historique des appels.
+Une application web front-end construite avec **React** et **Material-UI** pour envoyer des requêtes dynamiques à l'API REGARDS, visualiser les réponses et conserver un historique des appels.
 
 ---
 
@@ -8,38 +8,41 @@ Une application web front-end construite avec **React** et **Material-UI** pour 
 
 Ce guide explique comment utiliser l'application pour interroger une instance REGARDS.
 
-### 1. Se Connecter
+### 1. Accéder à une Instance
 
-**Étape 1** : Lancez l'application. Vous arriverez sur la page de connexion.
+L'application est conçue pour être flexible. Pour cibler une instance REGARDS, vous devez spécifier son adresse directement dans l'URL.
 
-**Étape 2** : Remplissez les trois champs :
+**Exemple** : Pour vous connecter à l'instance `10.31.37.15`, naviguez vers :
 
-- Votre nom d'utilisateur ou e-mail.
-- Votre mot de passe.
-- Le nom exact du projet REGARDS que vous souhaitez interroger.
+```
+http://localhost:5173/10.31.37.15/login
+```
 
-**Étape 3** : Cliquez sur **"Connexion"**.  
-Si les identifiants sont corrects, vous serez redirigé vers l'interface principale.
+### 2. Se Connecter
 
----
+**Étape 1** : Une fois sur la page de connexion de l'instance, remplissez les champs suivants :
 
-### 2. Envoyer une Requête
+- Votre **nom d'utilisateur** ou **e-mail**.
+- Votre **mot de passe**.
+- Le **nom exact du projet REGARDS** que vous souhaitez interroger.
 
-L'interface principale est un client API complet :
+**Étape 2** : Cliquez sur **"Connexion"**. Si les identifiants sont corrects, vous serez redirigé vers l'interface principale.
 
-**Méthode** : Choisissez la méthode HTTP (GET, POST...) dans le menu déroulant.
+### 3. Envoyer une Requête
 
-**Microservice** : Saisissez le nom du microservice cible (ex : `rs-storage`).:
+L'interface principale est un **client API complet** :
 
-**Endpoint** : Saisissez le chemin de l'endpoint (ex : `cache`).
+- **Méthode** : Choisissez la méthode HTTP (`GET`, `POST`...) dans le menu déroulant.
+- **Microservice** : Saisissez le nom du microservice cible (ex : `rs-storage`).
+- **Endpoint** : Saisissez le chemin de l'endpoint (ex : `cache`).
 
-**Paramètres / Corps (JSON)** :
+#### Paramètres / Corps (JSON) :
 
-- Pour les requêtes **GET**, saisissez les paramètres d'URL au format JSON (ex : `{ "page": 0, "size": 10 }`).
-- Pour les requêtes **POST** ou **PUT**, saisissez le corps de la requête directement en JSON. L'éditeur vous aidera avec la coloration syntaxique.
-  **Envoyer** : Cliquez sur le bouton **"Envoyer"** pour lancer l'appel API.
+- Pour les requêtes **GET** : saisissez les **paramètres d'URL** au format JSON.
+- Pour les requêtes **POST** ou **PUT** : saisissez le **corps de la requête** en JSON.  
+  L'éditeur intégré offre une **coloration syntaxique** pour faciliter la saisie.
 
----
+**Envoyer** : Cliquez sur **"Envoyer"** pour lancer l'appel API.
 
 ### 3. Visualiser la Réponse
 
@@ -47,8 +50,6 @@ L'interface principale est un client API complet :
 - La réponse JSON est affichée dans un visualiseur interactif :
   Vous pouvez cliquer pour plier et déplier les différentes parties de la réponse.
 - Si une requête réussit mais ne renvoie pas de contenu (ex : statut 204), un message clair vous l'indiquera.
-
----
 
 ### 4. Utiliser l'Historique
 
@@ -67,18 +68,16 @@ L'interface principale est un client API complet :
 - **npm** (inclus avec Node.js) ou **yarn**
 - **Accès à une instance fonctionnelle** de REGARDS
 
----
-
 ### Étapes d'Installation
 
-#### 1. Cloner le dépôt
+1. **Cloner le dépôt**
 
 ```bash
 git clone https://github.com/Margauxgrc/ihm-regards
 cd ihm-regards
 ```
 
-#### 2. Installer les dépendances
+2. **Installer les dépendances**
 
 Cette commande va lire le fichier `package.json` et télécharger toutes les bibliothèques nécessaires (React, MUI, Axios...).
 
@@ -86,16 +85,7 @@ Cette commande va lire le fichier `package.json` et télécharger toutes les bib
 npm install
 ```
 
-#### 3. Configurer l'URL de l'API
-
-C'est l'étape la plus importante.  
-Ouvrez le fichier `src/constants/apiConstants.ts` et assurez-vous que la variable `HTTP_HOST` pointe bien vers votre instance REGARDS.
-
-```ts
-export const HTTP_HOST = 'http://10.31.37.15';
-```
-
-#### 4. Lancer le serveur de développement
+3. **Lancer le serveur de développement**
 
 Cette commande lance l'application en mode développement.
 
@@ -103,8 +93,11 @@ Cette commande lance l'application en mode développement.
 npm run dev
 ```
 
-L'application est maintenant disponible et se mettra à jour automatiquement si vous modifiez le code.  
-Vous pouvez y accéder à l'adresse [http://localhost:5173](http://localhost:5173).
+L'application est maintenant disponible. Pour l'utiliser, accédez à une URL incluant l'adresse de votre instance, par exemple :
+
+```
+http://localhost:5173/10.31.37.15/login
+```
 
 ---
 
@@ -125,6 +118,8 @@ Vous pouvez y accéder à l'adresse [http://localhost:5173](http://localhost:517
 ---
 
 ## Structure du Projet
+
+Le projet suit une architecture moderne où la logique est extraite dans des hooks personnalisés, rendant les composants plus simples et focalisés sur l'affichage.
 
 ```
 src/

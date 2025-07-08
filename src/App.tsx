@@ -3,7 +3,6 @@ import { AuthProvider } from './contexts/AuthProvider';
 import Router from './AppRouter';
 import { RespProvider } from './contexts/RespProvider';
 import { HistoryProvider } from './contexts/HistoryProvider';
-import React from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme';

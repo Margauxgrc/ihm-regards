@@ -32,7 +32,7 @@ describe('useRequestForm hook', () => {
   });
 
   it('doit passer isLoading à true puis revenir à false', async () => {
-    let resolvePromise;
+    let resolvePromise: () => void;
     const promise = new Promise((resolve) => {
       resolvePromise = () => resolve({ success: true });
     });

@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { AuthContext } from './AuthContext';
 
-export const AuthProvider = ({ children }) => {
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [authToken, setAuthToken] = useState(() => localStorage.getItem('authToken'));
   const [project, setProject] = useState(() => localStorage.getItem('project'));
 
-  const login = (token, expires_in, project) => {
+  const login = (token: string, expires_in: number, project: string) => {
     const now = new Date();
     const expiryTime = new Date(now.getTime() + expires_in * 1000);
 

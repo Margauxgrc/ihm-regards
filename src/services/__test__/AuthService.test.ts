@@ -14,7 +14,7 @@ describe('AuthService', () => {
     };
     vi.mocked(axios.post).mockResolvedValue(mockResponse);
 
-    const result = await generateToken('user', 'pass', 'project');
+    const result = await generateToken('host', 'user', 'pass', 'project');
 
     expect(result.token).toBe('fake_token_123');
     expect(result.expires_in).toBe(3600);
@@ -23,6 +23,6 @@ describe('AuthService', () => {
   it("doit lancer une erreur en cas d'échec", async () => {
     vi.mocked(axios.post).mockRejectedValue(new Error('Erreur réseau'));
 
-    await expect(generateToken('user', 'pass', 'project')).rejects.toThrow('Échec de la connexion');
+    await expect(generateToken('host', 'user', 'pass', 'project')).rejects.toThrow('Échec de la connexion');
   });
 });

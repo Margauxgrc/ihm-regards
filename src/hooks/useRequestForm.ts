@@ -54,8 +54,12 @@ export function useRequestForm(host: string | undefined) {
       addHistoryEntry({ method, microservice, endpoint, payloadText });
       setResponse(apiResponse);
       navigate(`/${host}/response`);
-    } catch (e) {
-      setError(e.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('Une erreur inattendue est survenue.');
+      }
     } finally {
       setIsLoading(false);
     }

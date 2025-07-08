@@ -1,4 +1,3 @@
-import React from 'react';
 import { Drawer, Box, Typography, IconButton, Button, Divider } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useHistory } from '../hooks/useHistory';

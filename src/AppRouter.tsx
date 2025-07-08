@@ -1,11 +1,14 @@
-import React from 'react';
 import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import RequestPage from './pages/RequestPage';
 import RespPage from './pages/RespPage';
 import LoginPage from './pages/LoginPage';
 import { useAuth } from './hooks/useAuth';
 
-const ProtectedRoute = ({ component: Component }) => {
+interface ProtectedRouteProps {
+  component: React.ComponentType;
+}
+
+const ProtectedRoute = ({ component: Component }: ProtectedRouteProps) => {
   const { authToken } = useAuth();
   const { host } = useParams<{ host: string }>();
 
