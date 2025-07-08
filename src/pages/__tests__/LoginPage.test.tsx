@@ -16,10 +16,13 @@ const TestAppWrapper = () => {
     <AuthProvider>
       <RespProvider>
         <HistoryProvider>
-          <MemoryRouter initialEntries={['/login']} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <MemoryRouter
+            initialEntries={['/10.31.37.15/login']}
+            future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+          >
             <Routes>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/home" element={<RequestPage />} />
+              <Route path="/:host/login" element={<LoginPage />} />
+              <Route path="/:host/home" element={<RequestPage />} />
             </Routes>
           </MemoryRouter>
         </HistoryProvider>
@@ -61,7 +64,7 @@ describe('Page de Connexion', () => {
     fireEvent.click(screen.getByRole('button', { name: /Connexion/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/Identifiants incorrects/i)).toBeInTheDocument();
+      expect(screen.getByText(/Identifiants ou adresse de l'instance incorrects/i)).toBeInTheDocument();
     });
   });
 });

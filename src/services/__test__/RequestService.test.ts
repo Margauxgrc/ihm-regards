@@ -1,12 +1,12 @@
 import { describe, it, expect, vi } from 'vitest';
 import axios from 'axios';
 import { callApi, ApiConfig } from '../RequestService';
-import { HTTP_HOST } from '../../constants';
 
 vi.mock('axios');
 
 describe('RequestService - callApi', () => {
   const baseConfig: Omit<ApiConfig, 'method'> = {
+    host: 'test-host',
     microservice: 'test-service',
     endpoint: 'test-endpoint',
     authToken: 'fake_token',
@@ -28,7 +28,7 @@ describe('RequestService - callApi', () => {
     expect(result).toEqual(mockData);
     expect(axios).toHaveBeenCalledWith({
       method: 'GET',
-      url: `${HTTP_HOST}/api/v1/test-service/test-endpoint`,
+      url: `http://test-host/api/v1/test-service/test-endpoint`,
       headers: {
         Authorization: `Bearer fake_token`,
         scope: 'test-project',
@@ -53,7 +53,7 @@ describe('RequestService - callApi', () => {
     expect(result).toEqual(mockData);
     expect(axios).toHaveBeenCalledWith({
       method: 'POST',
-      url: `${HTTP_HOST}/api/v1/test-service/test-endpoint`,
+      url: `http://test-host/api/v1/test-service/test-endpoint`,
       headers: {
         Authorization: `Bearer fake_token`,
         scope: 'test-project',

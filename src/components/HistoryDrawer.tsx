@@ -2,9 +2,7 @@ import React from 'react';
 import { Drawer, Box, Typography, IconButton, Button, Divider } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useHistory } from '../hooks/useHistory';
-import { HistoryEntryType } from '../types/HistoryEntryType';
-import { useNavigate } from 'react-router-dom';
-import HistoryList from '../components/HistoryList';
+import HistoryList from './HistoryList';
 
 interface HistoryDrawerProps {
   open: boolean;
@@ -12,18 +10,7 @@ interface HistoryDrawerProps {
 }
 
 export default function HistoryDrawer({ open, onClose }: HistoryDrawerProps) {
-  const { history, setSelectedEntry, removeHistoryEntry, clearHistory } = useHistory();
-  const navigate = useNavigate();
-
-  const handleSelect = (entry: HistoryEntryType) => {
-    setSelectedEntry(entry);
-    navigate('/home');
-    onClose();
-  };
-
-  const handleDelete = (id: string) => {
-    removeHistoryEntry(id);
-  };
+  const { history, clearHistory } = useHistory();
 
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
@@ -53,8 +40,7 @@ export default function HistoryDrawer({ open, onClose }: HistoryDrawerProps) {
         ) : (
           <Divider />
         )}
-
-        <HistoryList history={history} onSelectEntry={handleSelect} onDeleteEntry={handleDelete} />
+        <HistoryList history={history} onCloseDrawer={onClose} />
       </Box>
     </Drawer>
   );

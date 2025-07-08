@@ -1,13 +1,12 @@
 import axios from 'axios';
-import { HTTP_HOST } from '../constants';
 
-export async function generateToken(username: string, password: string, project: string) {
+export async function generateToken(host: string, username: string, password: string, project: string) {
   const body = new URLSearchParams();
   body.append('grant_type', 'password');
   body.append('username', username);
   body.append('password', password);
 
-  const API_URL = HTTP_HOST + `/api/v1/rs-authentication/oauth/token?scope=${project}`;
+  const API_URL = `http://${host}/api/v1/rs-authentication/oauth/token?scope=${project}`;
 
   try {
     const response = await axios.post(API_URL, body.toString(), {

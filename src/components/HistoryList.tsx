@@ -5,11 +5,10 @@ import HistoryListItem from './HistoryListItem';
 
 interface HistoryListProps {
   history: HistoryEntryType[];
-  onSelectEntry: (entry: HistoryEntryType) => void;
-  onDeleteEntry: (id: string) => void;
+  onCloseDrawer: () => void;
 }
 
-export default function HistoryList({ history, onSelectEntry, onDeleteEntry }: HistoryListProps) {
+export default function HistoryList({ history, onCloseDrawer }: HistoryListProps) {
   if (history.length === 0) {
     return <Typography variant="body1">Aucune requête dans l'historique.</Typography>;
   }
@@ -17,7 +16,7 @@ export default function HistoryList({ history, onSelectEntry, onDeleteEntry }: H
   return (
     <List>
       {history.map((entry) => (
-        <HistoryListItem key={entry.id} entry={entry} onSelect={onSelectEntry} onDelete={onDeleteEntry} />
+        <HistoryListItem key={entry.id} entry={entry} onCloseDrawer={onCloseDrawer} />
       ))}
     </List>
   );

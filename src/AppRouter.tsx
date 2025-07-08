@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import RequestPage from './pages/RequestPage';
 import RespPage from './pages/RespPage';
 import LoginPage from './pages/LoginPage';
@@ -7,17 +7,23 @@ import { useAuth } from './hooks/useAuth';
 
 const ProtectedRoute = ({ component: Component }) => {
   const { authToken } = useAuth();
+  const { host } = useParams<{ host: string }>();
 
-  return authToken ? <Component /> : <Navigate to="/login" replace />;
+  return authToken ? <Component /> : <Navigate to={`/${host}/login`} replace />;
+};
+
+const HostRedirect = () => {
+  const { host } = useParams();
+  return <Navigate to={`/${host}/login`} replace />;
 };
 
 export default function Router() {
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/home" element={<ProtectedRoute component={RequestPage} />} />
-      <Route path="/response" element={<ProtectedRoute component={RespPage} />} />
-      <Route path="/*" element={<Navigate replace to="/login" />} />
+      <Route path="/:host/login" element={<LoginPage />} />
+      <Route path="/:host/home" element={<ProtectedRoute component={RequestPage} />} />
+      <Route path="/:host/response" element={<ProtectedRoute component={RespPage} />} />
+      <Route path="/:host" element={<HostRedirect />} />
     </Routes>
   );
 }

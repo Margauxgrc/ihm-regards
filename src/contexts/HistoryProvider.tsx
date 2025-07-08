@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { HistoryContext } from './HistoryContext';
 import { HistoryEntryType } from '../types/HistoryEntryType';
+import { HistoryContextType } from '../types/HistoryContextType';
 import { MaxHistoryLength } from '../constants';
 
 export const HistoryProvider = ({ children }) => {
@@ -13,13 +14,11 @@ export const HistoryProvider = ({ children }) => {
     }
   });
 
-  const [selectedEntry, setSelectedEntry] = useState<HistoryEntryType | null>(null);
-
   useEffect(() => {
     localStorage.setItem('requestHistory', JSON.stringify(history));
   }, [history]);
 
-  const addHistoryEntry = (entry: Omit<HistoryEntryType, 'id' | 'timestamp'>) => {
+  const addHistoryEntry = useCallback((entry: Omit<HistoryEntryType, 'id' | 'timestamp'>) => {
     const newEntry: HistoryEntryType = {
       ...entry,
       id: `hist-${Date.now()}`,
@@ -39,28 +38,25 @@ export const HistoryProvider = ({ children }) => {
       const updatedHistory = [newEntry, ...historyWithoutDuplicate];
       return updatedHistory.slice(0, MaxHistoryLength);
     });
-  };
+  }, []);
 
-  const removeHistoryEntry = (id: string) => {
+  const removeHistoryEntry = useCallback((id: string) => {
     setHistory((prevHistory) => prevHistory.filter((entry) => entry.id !== id));
-  };
+  }, []);
 
-  const clearHistory = () => {
+  const clearHistory = useCallback(() => {
     setHistory([]);
-  };
+  }, []);
 
-  return (
-    <HistoryContext.Provider
-      value={{
-        history,
-        selectedEntry,
-        setSelectedEntry,
-        addHistoryEntry,
-        removeHistoryEntry,
-        clearHistory,
-      }}
-    >
-      {children}
-    </HistoryContext.Provider>
+  const value: HistoryContextType = useMemo(
+    () => ({
+      history,
+      addHistoryEntry,
+      removeHistoryEntry,
+      clearHistory,
+    }),
+    [history, addHistoryEntry, removeHistoryEntry, clearHistory]
   );
+
+  return <HistoryContext.Provider value={value}>{children}</HistoryContext.Provider>;
 };

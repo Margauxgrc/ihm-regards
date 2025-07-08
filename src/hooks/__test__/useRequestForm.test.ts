@@ -5,7 +5,6 @@ import { callApi } from '../../services/RequestService';
 
 const mockSetResponse = vi.fn();
 const mockAddHistoryEntry = vi.fn();
-const mockSetSelectedEntry = vi.fn();
 const mockNavigate = vi.fn();
 
 vi.mock('../useResp', () => ({
@@ -17,12 +16,11 @@ vi.mock('../useAuth', () => ({
 vi.mock('../useHistory', () => ({
   useHistory: () => ({
     addHistoryEntry: mockAddHistoryEntry,
-    selectedEntry: null,
-    setSelectedEntry: mockSetSelectedEntry,
   }),
 }));
 vi.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
+  useLocation: () => ({ state: null }),
 }));
 vi.mock('../../services/RequestService', () => ({
   callApi: vi.fn(),
@@ -39,7 +37,7 @@ describe('useRequestForm hook', () => {
       resolvePromise = () => resolve({ success: true });
     });
     vi.mocked(callApi).mockReturnValue(promise);
-    const { result } = renderHook(() => useRequestForm());
+    const { result } = renderHook(() => useRequestForm('test-hook'));
 
     act(() => {
       result.current.onSubmit();
@@ -54,7 +52,7 @@ describe('useRequestForm hook', () => {
   });
 
   it('doit définir un message d"erreur si le JSON est invalide', async () => {
-    const { result } = renderHook(() => useRequestForm());
+    const { result } = renderHook(() => useRequestForm('test-hook'));
 
     act(() => {
       result.current.onPayloadChange('ceci n"est pas du json');
@@ -71,7 +69,7 @@ describe('useRequestForm hook', () => {
   it("doit appeler les bonnes fonctions en cas de succès de l'API", async () => {
     const apiResponse = { data: 'succès' };
     vi.mocked(callApi).mockResolvedValue(apiResponse);
-    const { result } = renderHook(() => useRequestForm());
+    const { result } = renderHook(() => useRequestForm('test-hook'));
 
     await act(async () => {
       await result.current.onSubmit();
@@ -79,13 +77,13 @@ describe('useRequestForm hook', () => {
 
     expect(mockAddHistoryEntry).toHaveBeenCalled();
     expect(mockSetResponse).toHaveBeenCalledWith(apiResponse);
-    expect(mockNavigate).toHaveBeenCalledWith('/response');
+    expect(mockNavigate).toHaveBeenCalledWith('/test-hook/response');
   });
 
   it("doit mettre à jour l'état d'erreur si l'API échoue", async () => {
     const apiError = new Error('Erreur API 500');
     vi.mocked(callApi).mockRejectedValue(apiError);
-    const { result } = renderHook(() => useRequestForm());
+    const { result } = renderHook(() => useRequestForm('test-hook'));
 
     await act(async () => {
       await result.current.onSubmit();

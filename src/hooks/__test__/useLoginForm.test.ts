@@ -10,6 +10,7 @@ vi.mock('../useAuth');
 const mockNavigate = vi.fn();
 vi.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
+  useLocation: () => ({ state: null }),
 }));
 
 describe('useLoginForm Hook', () => {
@@ -29,7 +30,7 @@ describe('useLoginForm Hook', () => {
     const mockTokenData = { token: 'un_super_token', expires_in: 3600 };
     vi.mocked(generateToken).mockResolvedValue(mockTokenData);
 
-    const { result } = renderHook(() => useLoginForm());
+    const { result } = renderHook(() => useLoginForm('test-host'));
 
     await act(async () => {
       await result.current.onSubmit({ preventDefault: () => {} } as React.FormEvent);
@@ -48,13 +49,13 @@ describe('useLoginForm Hook', () => {
     });
     vi.mocked(generateToken).mockRejectedValue(new Error('Erreur'));
 
-    const { result } = renderHook(() => useLoginForm());
+    const { result } = renderHook(() => useLoginForm('test-host'));
 
     await act(async () => {
       await result.current.onSubmit({ preventDefault: () => {} } as React.FormEvent);
     });
 
-    expect(result.current.error).toBe('Identifiants incorrects. Veuillez réessayer.');
+    expect(result.current.error).toBe("Identifiants ou adresse de l'instance incorrects. Veuillez réessayer.");
     expect(mockLogin).not.toHaveBeenCalled();
   });
 
@@ -66,8 +67,8 @@ describe('useLoginForm Hook', () => {
       logout: vi.fn(),
     });
 
-    renderHook(() => useLoginForm());
+    renderHook(() => useLoginForm('test-host'));
 
-    expect(mockNavigate).toHaveBeenCalledWith('/home');
+    expect(mockNavigate).toHaveBeenCalledWith('/test-host/home');
   });
 });

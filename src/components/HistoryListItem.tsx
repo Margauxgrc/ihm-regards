@@ -3,23 +3,37 @@ import { Box, Typography, ListItem, ListItemText, IconButton } from '@mui/materi
 import DeleteIcon from '@mui/icons-material/Delete';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { HistoryEntryType } from '../types/HistoryEntryType';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useHistory } from '../hooks/useHistory';
 
 interface HistoryListItemProps {
   entry: HistoryEntryType;
-  onSelect: (entry: HistoryEntryType) => void;
-  onDelete: (id: string) => void;
+  onCloseDrawer: () => void;
 }
 
-export default function HistoryListItem({ entry, onSelect, onDelete }: HistoryListItemProps) {
+export default function HistoryListItem({ entry, onCloseDrawer }: HistoryListItemProps) {
+  const { host } = useParams<{ host: string }>();
+  const navigate = useNavigate();
+  const { removeHistoryEntry } = useHistory();
+
+  const handleSelect = () => {
+    navigate(`/${host}/home`, { state: { entryToLoad: entry } });
+    onCloseDrawer();
+  };
+
+  const handleDelete = () => {
+    removeHistoryEntry(entry.id);
+  };
+
   return (
     <ListItem
       disablePadding
       secondaryAction={
         <Box sx={{ display: 'flex' }}>
-          <IconButton title="Recharger cette requête" onClick={() => onSelect(entry)}>
+          <IconButton title="Recharger cette requête" onClick={handleSelect}>
             <ReplayIcon />
           </IconButton>
-          <IconButton title="Supprimer" onClick={() => onDelete(entry.id)}>
+          <IconButton title="Supprimer" onClick={handleDelete}>
             <DeleteIcon />
           </IconButton>
         </Box>

@@ -22,10 +22,13 @@ const TestAppWrapper = () => {
     <AuthProvider>
       <RespProvider>
         <HistoryProvider>
-          <MemoryRouter initialEntries={['/home']} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <MemoryRouter
+            initialEntries={['/10.31.37.15/home']}
+            future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+          >
             <Routes>
-              <Route path="/home" element={<RequestPage />} />
-              <Route path="/response" element={<DisplayResponsePage />} />
+              <Route path="/:host/home" element={<RequestPage />} />
+              <Route path="/:host/response" element={<DisplayResponsePage />} />
             </Routes>
           </MemoryRouter>
         </HistoryProvider>

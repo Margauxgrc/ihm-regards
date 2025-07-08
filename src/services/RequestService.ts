@@ -1,7 +1,7 @@
 import axios, { Method } from 'axios';
-import { HTTP_HOST } from '../constants';
 
 export interface ApiConfig {
+  host: string;
   method: Method;
   microservice: string;
   endpoint: string;
@@ -12,9 +12,9 @@ export interface ApiConfig {
 }
 
 export async function callApi(config: ApiConfig): Promise<any> {
-  const { method, microservice, endpoint, authToken, project, queryParams, body } = config;
+  const { host, method, microservice, endpoint, authToken, project, queryParams, body } = config;
 
-  const baseUrl = HTTP_HOST + `/api/v1/${microservice}/${endpoint}`;
+  const baseUrl = `http://${host}/api/v1/${microservice}/${endpoint}`;
 
   try {
     const response = await axios({

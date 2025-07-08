@@ -3,7 +3,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { generateToken } from '../services/AuthService';
 
-export function useLoginForm() {
+export function useLoginForm(host: string | undefined) {
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [project, setProject] = useState('');
@@ -12,17 +12,21 @@ export function useLoginForm() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (authToken) navigate('/home');
+    if (authToken) navigate(`/${host}/home`);
   }, [authToken, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    if (!host) {
+      setError("L'adresse de l'instance est manquante dans l'URL.");
+      return;
+    }
     try {
-      const { token, expires_in } = await generateToken(username, password, project);
+      const { token, expires_in } = await generateToken(host, username, password, project);
       login(token, expires_in, project);
     } catch {
-      setError('Identifiants incorrects. Veuillez réessayer.');
+      setError("Identifiants ou adresse de l'instance incorrects. Veuillez réessayer.");
     }
   };
 

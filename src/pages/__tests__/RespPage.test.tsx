@@ -4,9 +4,10 @@ import RespPage from '../RespPage';
 import { AuthProvider } from '../../contexts/AuthProvider';
 import { HistoryProvider } from '../../contexts/HistoryProvider';
 import { RespProvider } from '../../contexts/RespProvider';
-import { MemoryRouter } from 'react-router-dom';
-import React, { ReactNode } from 'react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import React from 'react';
 import { useResp } from '../../hooks/useResp';
+import RequestPage from '../RequestPage';
 
 vi.mock('../../hooks/useResp');
 
@@ -20,12 +21,20 @@ vi.mock('react-router-dom', async () => ({
   useNavigate: () => mockNavigate,
 }));
 
-const TestAppWrapper = ({ children }: { children: ReactNode }) => {
+const TestAppWrapper = () => {
   return (
     <AuthProvider>
       <RespProvider>
         <HistoryProvider>
-          <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>{children}</MemoryRouter>
+          <MemoryRouter
+            initialEntries={['/test-host/response']}
+            future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+          >
+            <Routes>
+              <Route path="/:host/home" element={<RequestPage />} />
+              <Route path="/:host/response" element={<RespPage />} />
+            </Routes>
+          </MemoryRouter>
         </HistoryProvider>
       </RespProvider>
     </AuthProvider>
@@ -72,6 +81,6 @@ describe('Page de Réponse', () => {
     render(<RespPage />, { wrapper: TestAppWrapper });
 
     fireEvent.click(screen.getByRole('button', { name: /Envoyer une nouvelle requête/i }));
-    expect(mockNavigate).toHaveBeenCalledWith('/home');
+    expect(mockNavigate).toHaveBeenCalledWith('/test-host/home');
   });
 });

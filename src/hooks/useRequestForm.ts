@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useResp } from '../hooks/useResp';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { callApi, ApiConfig } from '../services/RequestService';
 import { Method } from 'axios';
 import { useHistory } from '../hooks/useHistory';
-import { HistoryEntryType } from '../types/HistoryEntryType';
 
-export function useRequestForm() {
+export function useRequestForm(host: string | undefined) {
+  const location = useLocation();
   const { setResponse } = useResp();
   const { authToken, project } = useAuth();
-  const { selectedEntry, setSelectedEntry, addHistoryEntry } = useHistory();
+  const { addHistoryEntry } = useHistory();
   const navigate = useNavigate();
 
   const [method, setMethod] = useState<Method>('GET');
@@ -25,6 +25,10 @@ export function useRequestForm() {
       setError("Erreur d'authentification.");
       return;
     }
+    if (!host) {
+      setError("L'adresse de l'instance est manquante dans l'URL.");
+      return;
+    }
     setIsLoading(true);
     setError(null);
     let parsedPayload = {};
@@ -36,6 +40,7 @@ export function useRequestForm() {
       return;
     }
     const apiConfig: ApiConfig = {
+      host,
       method,
       microservice,
       endpoint,
@@ -48,7 +53,7 @@ export function useRequestForm() {
       const apiResponse = await callApi(apiConfig);
       addHistoryEntry({ method, microservice, endpoint, payloadText });
       setResponse(apiResponse);
-      navigate('/response');
+      navigate(`/${host}/response`);
     } catch (e) {
       setError(e.message);
     } finally {
@@ -56,19 +61,16 @@ export function useRequestForm() {
     }
   };
 
-  const loadRequestFromHistory = (entry: HistoryEntryType) => {
-    setMethod(entry.method);
-    setMicroservice(entry.microservice);
-    setEndpoint(entry.endpoint);
-    setPayloadText(entry.payloadText);
-  };
-
   useEffect(() => {
-    if (selectedEntry) {
-      loadRequestFromHistory(selectedEntry);
-      setSelectedEntry(null);
+    const entryToLoad = location.state?.entryToLoad;
+    if (entryToLoad) {
+      setMethod(entryToLoad.method);
+      setMicroservice(entryToLoad.microservice);
+      setEndpoint(entryToLoad.endpoint);
+      setPayloadText(entryToLoad.payloadText);
+      window.history.replaceState({}, document.title);
     }
-  }, [selectedEntry, setSelectedEntry]);
+  }, [location.state]);
 
   return {
     method,
