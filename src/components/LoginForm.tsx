@@ -34,10 +34,10 @@ export default function LoginForm({
     >
       <Paper>
         <Typography variant="h6" gutterBottom>
-          Connexion à l'interface de communication avec Regards
+          Connexion à l'interface de communication avec REGARDS
         </Typography>
         <Typography variant="body2" gutterBottom>
-          Veuillez saisir vos identifiants Regards pour vous connecter
+          Veuillez saisir vos identifiants REGARDS pour vous connecter
         </Typography>
 
         {error && (
